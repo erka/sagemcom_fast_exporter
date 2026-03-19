@@ -1,0 +1,38 @@
+[package]
+name = "sagemcom-fast-exporter"
+version = "0.0.5"
+edition = "2021"
+rust-version = "1.94"
+
+[dependencies]
+axum = { version = "0.8", features = ["macros"] }
+reqwest = { version = "0.13", features = ["json", "gzip"] }
+tokio = { version = "1", features = [
+  "sync",
+  "macros",
+  "net",
+  "rt-multi-thread",
+] }
+clap = { version = "4", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+prometheus = "0.14"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+md-5 = "0.10"
+sha2 = "0.10"
+digest = "0.11"
+rand = "0.10"
+urlencoding = "2"
+thiserror = "2"
+tower-http = { version = "0.6", features = ["trace"] }
+humantime = "2"
+tikv-jemallocator = "0.6"
+tikv-jemalloc-ctl = { version = "0.6", features = ["stats"] }
+
+[dev-dependencies]
+tokio-test = "0.4"
+
+[profile.release]
+lto = true
+opt-level = "z"
