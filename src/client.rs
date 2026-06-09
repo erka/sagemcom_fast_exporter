@@ -56,12 +56,20 @@ impl Client {
             AuthMethod::SHA512 => {
                 let mut hasher = Sha512::new();
                 hasher.update(password.as_bytes());
-                format!("{:x}", hasher.finalize())
+                hasher
+                    .finalize()
+                    .iter()
+                    .map(|b| format!("{:02x}", b))
+                    .collect::<String>()
             }
             AuthMethod::MD5 => {
                 let mut hasher = Md5::new();
                 hasher.update(password.as_bytes());
-                format!("{:x}", hasher.finalize())
+                hasher
+                    .finalize()
+                    .iter()
+                    .map(|b| format!("{:02x}", b))
+                    .collect::<String>()
             }
         };
 
@@ -91,12 +99,20 @@ impl Client {
             AuthMethod::SHA512 => {
                 let mut hasher = Sha512::new();
                 hasher.update(data.as_bytes());
-                format!("{:x}", hasher.finalize())
+                hasher
+                    .finalize()
+                    .iter()
+                    .map(|b| format!("{:02x}", b))
+                    .collect::<String>()
             }
             AuthMethod::MD5 => {
                 let mut hasher = Md5::new();
                 hasher.update(data.as_bytes());
-                format!("{:x}", hasher.finalize())
+                hasher
+                    .finalize()
+                    .iter()
+                    .map(|b| format!("{:02x}", b))
+                    .collect::<String>()
             }
         }
     }
