@@ -1,0 +1,23 @@
+name: check
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  cargo-vet:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - name: set up Rust
+        uses: dtolnay/rust-toolchain@efa25f7f19611383d5b0ccf2d1c8914531636bf9 # stable
+        with:
+          toolchain: stable
+          target: aarch64-unknown-linux-musl
+      - name: install cargo-vet
+        uses: taiki-e/install-action@cargo-vet
+      - name: run cargo-vet
+        run: cargo vet
