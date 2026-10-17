@@ -4,21 +4,59 @@ on:
       - main
 
 permissions:
-  contents: read 
+  contents: read
 
 name: release-please
 
 jobs:
   release-please:
+    outputs:
+      release_created: ${{ steps.rp.outputs.release_created }}
+      tag_name: ${{ steps.rp.outputs.tag_name }}
     permissions:
       contents: write
       issues: write
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
-      - uses: googleapis/release-please-action@v4
+      - id: rp
+        uses: googleapis/release-please-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           config-file: .release-please-config.json
           manifest-file: .release-please-manifest.json
+
+  build:
+    needs: release-please
+    if: needs.release-please.outputs.release_created == 'true'
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          ref: ${{ needs.release-please.outputs.tag_name }}
+      - name: set up Rust
+        uses: dtolnay/rust-toolchain@efa25f7f19611383d5b0ccf2d1c8914531636bf9 # stable
+        with:
+          toolchain: stable
+          target: aarch64-unknown-linux-musl
+      - name: install packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends musl-tools
+      - name: build
+        run: cargo build --release --locked --target aarch64-unknown-linux-musl
+      - name: package
+        run: |
+          mkdir -p release
+          sha256sum target/aarch64-unknown-linux-musl/release/sagemcom-fast-exporter > release/checksums.txt
+          tar -czvf release/sagemcom-fast-exporter-linux-arm64.tar.gz -C target/aarch64-unknown-linux-musl/release sagemcom-fast-exporter
+          cd release
+          sha256sum *.tar.gz >> checksums.txt
+      - name: upload assets
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload "${{ needs.release-please.outputs.tag_name }}" release/*.tar.gz release/checksums.txt
 
