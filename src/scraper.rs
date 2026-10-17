@@ -678,24 +678,22 @@ impl Scraper {
                 if let Some(v) = value {
                     match xpath {
                         "Device/DeviceInfo/MemoryStatus" => {
-                            if let Some(ms) = v.get("MemoryStatus") {
-                                if let (Some(total), Some(free)) = (ms.get("Total").and_then(|t| t.as_i64()), ms.get("Free").and_then(|f| f.as_i64())) {
+                            if let Some(ms) = v.get("MemoryStatus")
+                                && let (Some(total), Some(free)) = (ms.get("Total").and_then(|t| t.as_i64()), ms.get("Free").and_then(|f| f.as_i64())) {
                                     usage.total_memory = total;
                                     usage.free_memory = free;
                                 }
-                            }
                         },
                         "Device/DeviceInfo/FlashMemoryStatus" => {
-                            if let Some(fs) = v.get("FlashMemoryStatus") {
-                                if let (Some(total), Some(free)) = (fs.get("Total").and_then(|t| t.as_i64()), fs.get("Free").and_then(|f| f.as_i64())) {
+                            if let Some(fs) = v.get("FlashMemoryStatus")
+                                && let (Some(total), Some(free)) = (fs.get("Total").and_then(|t| t.as_i64()), fs.get("Free").and_then(|f| f.as_i64())) {
                                     usage.available_flash_memory = free;
                                     usage.used_flash_memory = total - free;
                                 }
-                            }
                         },
                         "Device/DeviceInfo/ProcessStatus/LoadAverage" => {
-                            if let Ok(la) = serde_json::from_value::<serde_json::Value>(v.clone()) {
-                                if let Some(load_avg) = la.get("LoadAverage") {
+                            if let Ok(la) = serde_json::from_value::<serde_json::Value>(v.clone())
+                                && let Some(load_avg) = la.get("LoadAverage") {
                                     if let Some(load1) = load_avg.get("Load1").and_then(|v| v.as_f64()) {
                                         usage.load_average = load1;
                                     }
@@ -706,7 +704,6 @@ impl Scraper {
                                         usage.load_average_15 = load15;
                                     }
                                 }
-                            }
                         },
                         "Device/DeviceInfo/ProcessStatus/CPUUsage" => {
                             if let Some(cpu) = v.as_f64().or(v.as_i64().map(|i| i as f64)) {
