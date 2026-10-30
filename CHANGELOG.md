@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.11](https://github.com/erka/sagemcom_fast_exporter/compare/v0.0.10...v0.0.11) (2026-10-30)
+
+
+### Bug Fixes
+
+* update release-please action to v5 ([#8](https://github.com/erka/sagemcom_fast_exporter/issues/8)) ([857c917](https://github.com/erka/sagemcom_fast_exporter/commit/857c91768568f08b19d14148934cfe210093e45c))
+
 ## [0.0.10](https://github.com/erka/sagemcom_fast_exporter/compare/v0.0.9...v0.0.10) (2026-10-30)
 
 
