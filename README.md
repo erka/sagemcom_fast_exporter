@@ -9,7 +9,6 @@ A lightweight Prometheus exporter for Sagemcom F@st series routers.
 - Supports SHA512 and MD5 authentication methods
 - Configurable logging levels
 
-
 ## Building
 
 ```console
