@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.12](https://github.com/erka/sagemcom_fast_exporter/compare/v0.0.11...v0.0.12) (2026-10-30)
+
+
+### Bug Fixes
+
+* publish release only after asset upload ([#10](https://github.com/erka/sagemcom_fast_exporter/issues/10)) ([ef8549e](https://github.com/erka/sagemcom_fast_exporter/commit/ef8549e09a8933ad731ef281fc2eaaceb1f377ef))
+
 ## [0.0.11](https://github.com/erka/sagemcom_fast_exporter/compare/v0.0.10...v0.0.11) (2026-10-30)
 
 
